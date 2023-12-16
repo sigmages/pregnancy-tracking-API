@@ -12,6 +12,7 @@ psycopg2-binary = "^2.9.9"
 djangorestframework = "^3.14.0"
 markdown = "^3.5.1"
 django-filter = "^23.5"
+gunicorn = "^21.2.0"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^6.1.0"
