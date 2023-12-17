@@ -1,0 +1,28 @@
+version: '3.1'
+
+services:
+  api:
+    build: .
+    env_file:
+      - .env
+    ports:
+      - '8000:8000'
+    depends_on:
+      - database
+    volumes:
+      - ./:/app
+
+  database:
+    container_name: postgres
+    image: postgres:16.1-alpine
+    env_file:
+      - .env
+    ports:
+      - 5432:5432
+    command: -c fsync=off
+
+  cache:
+    container_name: redis
+    image: redis:7.2-alpine
+    ports:
+      - 6379:6379
