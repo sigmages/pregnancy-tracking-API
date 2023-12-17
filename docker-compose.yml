@@ -3,8 +3,14 @@ version: '3.1'
 services:
   api:
     build: .
+    env_file:
+      - .env
     ports:
       - '8000:8000'
+    depends_on:
+      - database
+    volumes:
+      - ./:/app
 
   database:
     container_name: postgres

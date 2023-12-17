@@ -11,9 +11,12 @@ ENV PIP_DEFAULT_TIMEOUT=100 \
 RUN mkdir /app
 WORKDIR /app
 
-COPY ./app/ /app/
-COPY ./pyproject.toml /app/
-COPY ./poetry.lock /app/
+COPY ./app/application application
+COPY ./app/core core
+COPY ./app/infrastructure infrastructure
+COPY ./app/manage.py manage.py
+COPY ./pyproject.toml pyproject.toml
+COPY ./poetry.lock poetry.lock
 COPY ./Makefile Makefile
 
 RUN apt-get update
@@ -23,5 +26,8 @@ RUN make poetry/setup
 RUN poetry config virtualenvs.create false
 RUN make poetry/install-dependencies
 
-CMD gunicorn --bind 0.0.0.0:8000 core.wsgi:application
+RUN python manage.py collectstatic --noinput
+
+CMD gunicorn --workers 3 --bind 0.0.0.0:8000 --chdir app/ core.wsgi
+
 EXPOSE 8000
