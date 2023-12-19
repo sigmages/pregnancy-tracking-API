@@ -10,13 +10,14 @@ class UserService:
             username=user_entity.username,
             defaults={
                 "email": user_entity.email,
-                "password": user_entity.password,
                 "first_name": user_entity.first_name,
                 "last_name": user_entity.last_name,
                 "is_active": user_entity.is_active,
             },
         )
+        user_model.set_password(user_entity.password)
         user_model.save()
+
         return user_entity, created
 
     @classmethod
